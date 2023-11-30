@@ -3,8 +3,14 @@ server:
 
 spring:
   datasource:
-    url: jdbc:sqlserver://${DB_HOST:localhost}:${DB_PORT:1433};database=master;encrypt=false
+    url: ${DB_URL:jdbc:sqlserver://localhost:1433;database=master;encrypt=false}
     username: ${DB_USERNAME:sa}
     password: ${DB_PASSWORD:p@ssw0rD!}
   liquibase:
-    enabled: false
+    url: ${DB_URL:jdbc:sqlserver://localhost:1433;database=master;encrypt=false}
+    user: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:p@ssw0rD!}
+    default-schema: dbo
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+    enabled: true
+    drop-first: false
