@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: db.changelog-0.1.0-1
+      author: anas
+      changes:
+        - tagDatabase:
+            tag: v0.1.0
+
+  - changeSet:
+      id: db.changelog-0.1.0-2
+      author: anas
+      changes:
+        - createTable:
+            catalogName: master
+            remarks: Customer table
+            schemaName: dbo
+            tableName: t_cust
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+              - column:
+                  name: name
+                  type: varchar(200)
+              - column:
+                  name: created_by
+                  type: varchar(50)
+              - column:
+                  name: created_dt
+                  type: timestamp
+              - column:
+                  name: updated_by
+                  type: varchar(50)
+              - column:
+                  name: updated_dt
+                  type: timestamp
+              - column:
+                  name: version
+                  type: integer
