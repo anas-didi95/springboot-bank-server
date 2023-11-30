@@ -1,0 +1,7 @@
+spring:
+  datasource:
+    url: jdbc:sqlserver://database:1433;encrypt=false
+    username: sa
+    password: p@ssw0rD!
+  liquibase:
+    enabled: false
