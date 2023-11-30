@@ -19,6 +19,8 @@ databaseChangeLog:
               - column:
                   name: id
                   type: uuid
+                  constraints:
+                    nullable: false
               - column:
                   name: cust_no
                   type: varchar(10)
@@ -54,3 +56,17 @@ databaseChangeLog:
                   type: integer
                   constraints:
                     nullable: false
+        - addPrimaryKey:
+            catalogName: master
+            columnNames: id
+            constraintName: pk_cust
+            schemaName: dbo
+            tableName: t_cust
+            validate: true
+        - addUniqueConstraint:
+            catalogName: master
+            columnNames: cust_no
+            constraintName: uq_cust_cust_no
+            schemaName: dbo
+            tableName: t_cust
+            validate: true
