@@ -3,8 +3,28 @@ version: "3"
 services:
   webservice:
     userns_mode: keep-id
-    image: mcr.microsoft.com/devcontainers/java:1-21-bullseye
+    image: mcr.microsoft.com/devcontainers/java:1-17-bullseye
     command: sleep infinity
+    env_file:
+      - .env
     volumes:
       - "./:/home/vscode/workspace/:z"
       - ".vscode-server/:/home/vscode/.vscode-server/:z"
+      - ".m2/:/home/vscode/.m2/:z"
+    depends_on:
+      - database
+
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${DB_PASSWORD:p@ssw0rD!}
+      - MSSQL_PID=Developer
+    ports:
+      - 1433:1433
+    volumes:
+      - mssql:/var/opt/mssql/data
+
+volumes:
+  mssql:
