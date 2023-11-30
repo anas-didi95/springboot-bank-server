@@ -11,9 +11,7 @@ databaseChangeLog:
       author: anas
       changes:
         - createTable:
-            catalogName: master
             remarks: Customer table
-            schemaName: dbo
             tableName: t_cust
             columns:
               - column:
@@ -57,16 +55,10 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addPrimaryKey:
-            catalogName: master
             columnNames: id
             constraintName: pk_cust
-            schemaName: dbo
             tableName: t_cust
-            validate: true
         - addUniqueConstraint:
-            catalogName: master
             columnNames: cust_no
-            constraintName: uq_cust_cust_no
-            schemaName: dbo
+            constraintName: uq_cust#cust_no
             tableName: t_cust
-            validate: true
