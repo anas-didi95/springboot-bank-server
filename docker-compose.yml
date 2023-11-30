@@ -5,6 +5,8 @@ services:
     userns_mode: keep-id
     image: mcr.microsoft.com/devcontainers/java:1-17-bullseye
     command: sleep infinity
+    env_file:
+      - .env
     volumes:
       - "./:/home/vscode/workspace/:z"
       - ".vscode-server/:/home/vscode/.vscode-server/:z"
@@ -17,7 +19,7 @@ services:
     restart: always
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=p@ssw0rD!
+      - MSSQL_SA_PASSWORD=${DB_PASSWORD:p@ssw0rD!}
       - MSSQL_PID=Developer
     ports:
       - 1433:1433

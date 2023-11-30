@@ -1,5 +1,6 @@
 .vscode-server/
 .m2/
+.env
 
 HELP.md
 target/

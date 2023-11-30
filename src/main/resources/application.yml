@@ -1,7 +1,10 @@
+server:
+  port: ${APP_PORT:8080}
+
 spring:
   datasource:
-    url: jdbc:sqlserver://database:1433;encrypt=false
-    username: sa
-    password: p@ssw0rD!
+    url: jdbc:sqlserver://${DB_HOST:localhost}:${DB_PORT:1433};database=master;encrypt=false
+    username: ${DB_USERNAME:sa}
+    password: ${DB_PASSWORD:p@ssw0rD!}
   liquibase:
     enabled: false
