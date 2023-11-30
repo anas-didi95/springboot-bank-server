@@ -21,12 +21,13 @@
   "customizations": {
     "vscode": {
       "extensions": [
-        "vscjava.vscode-java-pack",
-        "chris-rimmer.liquibase-snippets",
-        "dotjoshjohnson.xml",
-        "gabrielbb.vscode-lombok",
-        "vmware.vscode-boot-dev-pack"
-      ]
+		"vscjava.vscode-java-pack",
+		"chris-rimmer.liquibase-snippets",
+		"dotjoshjohnson.xml",
+		"gabrielbb.vscode-lombok",
+		"vmware.vscode-boot-dev-pack",
+		"voidrot.liquibase"
+	]
     }
   }
 
