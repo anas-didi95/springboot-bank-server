@@ -8,6 +8,7 @@ services:
     volumes:
       - "./:/home/vscode/workspace/:z"
       - ".vscode-server/:/home/vscode/.vscode-server/:z"
+      - ".m2/:/home/vscode/.m2/:z"
     depends_on:
       - database
 
