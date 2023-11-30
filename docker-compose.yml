@@ -8,3 +8,20 @@ services:
     volumes:
       - "./:/home/vscode/workspace/:z"
       - ".vscode-server/:/home/vscode/.vscode-server/:z"
+    depends_on:
+      - database
+
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=p@ssw0rD!
+      - MSSQL_PID=Developer
+    ports:
+      - 1433:1433
+    volumes:
+      - mssql:/var/opt/mssql/data
+
+volumes:
+  mssql:
