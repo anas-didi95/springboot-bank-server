@@ -6,4 +6,5 @@ services:
     image: mcr.microsoft.com/devcontainers/java:1-21-bullseye
     command: sleep infinity
     volumes:
-      - "./:/home/vscode/workspace:z"
+      - "./:/home/vscode/workspace/:z"
+      - ".vscode-server/:/home/vscode/.vscode-server/:z"
