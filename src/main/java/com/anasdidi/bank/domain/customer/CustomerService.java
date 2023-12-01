@@ -14,11 +14,8 @@ public class CustomerService {
 
   private final CustomerRepository customerRepository;
 
-  public CustomerDTO createCustomer() {
-    Customer customer = Customer.builder()
-        .customerNo("0123456789")
-        .name("ANAS JUWAIDI")
-        .build();
+  public CustomerDTO createCustomer(CustomerDTO dto) {
+    Customer customer = CustomerMapper.INSTANCE.toEntity(dto);
     customer = customerRepository.saveAndFlush(customer);
     return CustomerMapper.INSTANCE.toDTO(customer);
   }

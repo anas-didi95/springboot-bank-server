@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,8 +21,9 @@ class CustomerController {
   private final CustomerService customerService;
 
   @PostMapping(value = { "", "/" })
-  ResponseEntity<CustomerDTO> createCustomer(HttpServletRequest request) {
-    CustomerDTO responseBody = customerService.createCustomer();
+  ResponseEntity<CustomerDTO> createCustomer(HttpServletRequest request,
+      @RequestBody CustomerDTO requestBody) {
+    CustomerDTO responseBody = customerService.createCustomer(requestBody);
     URI createdURI = URI.create(request.getRequestURI() + "/" + responseBody.getId());
     return ResponseEntity.created(createdURI).body(responseBody);
   }
