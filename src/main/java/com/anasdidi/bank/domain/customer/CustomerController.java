@@ -1,14 +1,17 @@
 package com.anasdidi.bank.domain.customer;
 
 import java.net.URI;
-import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.anasdidi.bank.common.PaginationDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +32,8 @@ class CustomerController {
   }
 
   @GetMapping(value = { "", "/" })
-  ResponseEntity<List<CustomerDTO>> getCustomerList() {
-    List<CustomerDTO> responseBody = customerService.getCustomerList();
+  ResponseEntity<PaginationDTO<CustomerDTO>> getCustomerList(@PageableDefault(page = 0, size = 10) Pageable pageable) {
+    PaginationDTO<CustomerDTO> responseBody = customerService.getCustomerList(pageable);
     return ResponseEntity.ok().body(responseBody);
   }
 }

@@ -2,7 +2,11 @@ package com.anasdidi.bank.domain.customer;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import com.anasdidi.bank.common.PaginationDTO;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,10 +24,11 @@ public class CustomerService {
     return CustomerMapper.INSTANCE.toDTO(customer);
   }
 
-  public List<CustomerDTO> getCustomerList() {
-    List<Customer> resultList = customerRepository.findAll();
-    return resultList.stream()
+  public PaginationDTO<CustomerDTO> getCustomerList(Pageable pageable) {
+    Page<Customer> page = customerRepository.findAll(pageable);
+    List<CustomerDTO> resultList = page.getContent().stream()
         .map(CustomerMapper.INSTANCE::toDTO)
         .toList();
+    return new PaginationDTO<CustomerDTO>(resultList, page);
   }
 }
