@@ -1,0 +1,72 @@
+databaseChangeLog:
+  - changeSet:
+      id: db.changelog-0.1.0-1
+      author: anas
+      changes:
+        - tagDatabase:
+            tag: v0.1.0
+
+  - changeSet:
+      id: db.changelog-0.1.0-2
+      author: anas
+      changes:
+        - createTable:
+            remarks: Customer table
+            tableName: t_cust
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: cust_no
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_by
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_dt
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_by
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_dt
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: version
+                  type: integer
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: pk_cust
+            tableName: t_cust
+        - addUniqueConstraint:
+            columnNames: cust_no
+            constraintName: uq_cust#cust_no
+            tableName: t_cust
+
+  - changeSet:
+      id: db.changelog-0.1.0-3
+      author: anas
+      changes:
+        - loadData:
+            tableName: t_cust
+            file: classpath:/db/changelog/data/t_cust.csv

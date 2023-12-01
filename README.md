@@ -4,11 +4,9 @@
 | Variable Name | Data Type | Description | Default Value |
 | --- | --- | --- | --- |
 | APP_PORT | Number | Application port | 8080 |
-| DB_HOST | String | Database host | localhost |
-| DB_PORT | String | Database port | 1433 |
+| DB_URL | String | Database URL | jdbc:sqlserver://localhost:1433;database=master;encrypt=false |
 | DB_USERNAME | String | Database username | sa |
 | DB_PASSWORD | String | Database password | p@ssw0rD! |
-
 
 ## References
 - [Common Application Properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)

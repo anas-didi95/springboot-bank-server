@@ -25,7 +25,9 @@
         "chris-rimmer.liquibase-snippets",
         "dotjoshjohnson.xml",
         "gabrielbb.vscode-lombok",
-        "vmware.vscode-boot-dev-pack"
+        "vmware.vscode-boot-dev-pack",
+        "voidrot.liquibase",
+        "redhat.vscode-yaml"
       ]
     }
   }
