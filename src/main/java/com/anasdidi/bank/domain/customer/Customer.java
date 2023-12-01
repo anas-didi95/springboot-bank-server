@@ -18,14 +18,18 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.persistence.Version;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "t_cust")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Builder
 public class Customer {
