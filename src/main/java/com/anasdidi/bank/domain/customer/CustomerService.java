@@ -1,6 +1,7 @@
 package com.anasdidi.bank.domain.customer;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -44,5 +45,13 @@ public class CustomerService {
         .map(CustomerMapper.INSTANCE::toDTO)
         .toList();
     return new PaginationDTO<CustomerDTO>(resultList, page);
+  }
+
+  public CustomerDTO getCustomer(String customerId) {
+    Optional<Customer> result = customerRepository.findById(customerId);
+    if (result.isEmpty()) {
+      return null;
+    }
+    return CustomerMapper.INSTANCE.toDTO(result.get());
   }
 }
