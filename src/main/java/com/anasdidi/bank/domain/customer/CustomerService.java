@@ -54,4 +54,17 @@ public class CustomerService {
     }
     return CustomerMapper.INSTANCE.toDTO(result.get());
   }
+
+  public CustomerDTO updateCustomer(String customerId, CustomerDTO newDTO) {
+    Optional<Customer> result = customerRepository.findById(customerId);
+    if (result.isEmpty()) {
+      return null;
+    }
+
+    Customer entity = result.get();
+    entity.setName(newDTO.getName());
+    entity = customerRepository.saveAndFlush(entity);
+    return CustomerMapper.INSTANCE.toDTO(entity);
+  }
+
 }
