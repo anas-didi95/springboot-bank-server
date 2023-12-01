@@ -1,6 +1,9 @@
-package com.anasdidi.bank.domain.customer;
+package com.anasdidi.bank.domain.account;
+
+import java.math.BigDecimal;
 
 import com.anasdidi.bank.common.BaseDTO;
+import com.anasdidi.bank.domain.customer.CustomerDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,9 +18,11 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString
 @SuperBuilder
-public class CustomerDTO extends BaseDTO {
+public class AccountDTO extends BaseDTO {
 
   private String id;
-  private String customerNo;
-  private String name;
+  private CustomerDTO customer;
+  private String accountNo;
+  private String accountCurrency;
+  private BigDecimal accountBalance;
 }
