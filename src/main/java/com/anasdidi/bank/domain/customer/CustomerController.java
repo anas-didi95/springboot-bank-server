@@ -5,6 +5,7 @@ import java.net.URI;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,5 +57,11 @@ class CustomerController {
       @RequestBody CustomerDTO requestBody) {
     CustomerDTO responseBody = customerService.updateCustomer(customerId, requestBody);
     return ResponseEntity.ok().body(responseBody);
+  }
+
+  @DeleteMapping("/{customerId}")
+  ResponseEntity<Void> deleteCustomer(@PathVariable String customerId) {
+    customerService.deleteCustomer(customerId);
+    return ResponseEntity.noContent().build();
   }
 }

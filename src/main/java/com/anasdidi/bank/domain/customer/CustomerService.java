@@ -67,4 +67,11 @@ public class CustomerService {
     return CustomerMapper.INSTANCE.toDTO(entity);
   }
 
+  public void deleteCustomer(String customerId) {
+    Optional<Customer> result = customerRepository.findById(customerId);
+    if (result.isEmpty()) {
+      return;
+    }
+    customerRepository.delete(result.get());
+  }
 }
