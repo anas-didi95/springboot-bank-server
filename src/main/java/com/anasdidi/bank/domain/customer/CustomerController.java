@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anasdidi.bank.common.PaginationDTO;
@@ -24,7 +25,8 @@ class CustomerController {
   private final CustomerService customerService;
 
   @PostMapping(value = { "", "/" })
-  ResponseEntity<CustomerDTO> createCustomer(HttpServletRequest request,
+  ResponseEntity<CustomerDTO> createCustomer(
+      HttpServletRequest request,
       @RequestBody CustomerDTO requestBody) {
     CustomerDTO responseBody = customerService.createCustomer(requestBody);
     URI createdURI = URI.create(request.getRequestURI() + "/" + responseBody.getId());
@@ -32,8 +34,11 @@ class CustomerController {
   }
 
   @GetMapping(value = { "", "/" })
-  ResponseEntity<PaginationDTO<CustomerDTO>> getCustomerList(@PageableDefault(page = 0, size = 10) Pageable pageable) {
-    PaginationDTO<CustomerDTO> responseBody = customerService.getCustomerList(pageable);
+  ResponseEntity<PaginationDTO<CustomerDTO>> getCustomerList(
+      @RequestParam(required = false) String customerNo,
+      @RequestParam(required = false) String name,
+      @PageableDefault(page = 0, size = 10) Pageable pageable) {
+    PaginationDTO<CustomerDTO> responseBody = customerService.getCustomerList(customerNo, name, pageable);
     return ResponseEntity.ok().body(responseBody);
   }
 }
