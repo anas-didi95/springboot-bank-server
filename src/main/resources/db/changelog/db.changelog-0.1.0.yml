@@ -62,3 +62,11 @@ databaseChangeLog:
             columnNames: cust_no
             constraintName: uq_cust#cust_no
             tableName: t_cust
+
+  - changeSet:
+      id: db.changelog-0.1.0-3
+      author: anas
+      changes:
+        - loadData:
+            tableName: t_cust
+            file: classpath:/db/changelog/data/t_cust.csv
