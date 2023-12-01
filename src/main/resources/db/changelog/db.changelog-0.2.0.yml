@@ -1,0 +1,82 @@
+databaseChangeLog:
+  - changeSet:
+      id: db.changelog-0.2.0-1
+      author: anas
+      changes:
+        - tagDatabase:
+            tag: v0.2.0
+
+  - changeSet:
+      id: db.changelog-0.2.0-2
+      author: anas
+      changes:
+        - createTable:
+            remarks: Account table
+            tableName: t_acct
+            columns:
+            - column:
+                name: id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: cust_id
+                type: uuid
+                constraints:
+                  nullable: false
+            - column:
+                name: acct_no
+                type: varchar(10)
+                constraints:
+                  nullable: false
+            - column:
+                name: acct_ccy
+                type: varchar(3)
+                constraints:
+                  nullable: false
+            - column:
+                name: acct_bal
+                type: numeric(23, 3)
+                defaultValue: "0"
+                constraints:
+                  nullable: false
+            - column:
+                name: created_by
+                type: varchar(50)
+                constraints:
+                  nullable: false
+            - column:
+                name: created_dt
+                type: timestamp
+                constraints:
+                  nullable: false
+            - column:
+                name: updated_by
+                type: varchar(50)
+                constraints:
+                  nullable: false
+            - column:
+                name: updated_dt
+                type: timestamp
+                constraints:
+                    nullable: false
+            - column:
+                name: version
+                type: integer
+                constraints:
+                  nullable: false
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: pk_acct
+            tableName: t_acct
+        - addUniqueConstraint:
+            columnNames: acct_no
+            constraintName: uq_acct#acct_no
+            tableName: t_acct
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: cust_id
+            baseTableName: t_acct
+            constraintName: fk_acct_cust
+            referencedColumnNames: id
+            referencedTableName: t_cust
