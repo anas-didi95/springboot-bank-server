@@ -16,3 +16,6 @@ spring:
     change-log: classpath:/db/changelog/db.changelog-master.yml
     enabled: true
     drop-first: false
+  jpa:
+    hibernate:
+      ddl-auto: none

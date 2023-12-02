@@ -1,6 +1,6 @@
-package com.anasdidi.bank.domain.customer;
+package com.anasdidi.bank.common;
 
-import com.anasdidi.bank.common.BaseDTO;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,9 +15,11 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @ToString
 @SuperBuilder
-public class CustomerDTO extends BaseDTO {
+public class BaseDTO {
 
-  private String id;
-  private String customerNo;
-  private String name;
+  private String createdBy;
+  private LocalDateTime createdDate;
+  private String updatedBy;
+  private LocalDateTime updatedDate;
+  private Integer version;
 }
