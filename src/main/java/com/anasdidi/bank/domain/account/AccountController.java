@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.anasdidi.bank.common.PaginationDTO;
 import com.anasdidi.bank.domain.account.request.DepositAccountRequest;
 import com.anasdidi.bank.domain.account.request.OpenAccountRequest;
+import com.anasdidi.bank.domain.account.request.WithdrawAccountRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,12 @@ public class AccountController {
   @PutMapping("/deposit")
   ResponseEntity<AccountDTO> depositAccount(@RequestBody DepositAccountRequest requestBody) {
     AccountDTO responseBody = accountService.depositAccount(requestBody);
+    return ResponseEntity.ok().body(responseBody);
+  }
+
+  @PutMapping("/withdraw")
+  ResponseEntity<AccountDTO> withdrawAccount(@RequestBody WithdrawAccountRequest requestBody) {
+    AccountDTO responseBody = accountService.withdrawAccount(requestBody);
     return ResponseEntity.ok().body(responseBody);
   }
 }

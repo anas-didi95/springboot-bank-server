@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.anasdidi.bank.common.PaginationDTO;
 import com.anasdidi.bank.domain.account.request.DepositAccountRequest;
 import com.anasdidi.bank.domain.account.request.OpenAccountRequest;
+import com.anasdidi.bank.domain.account.request.WithdrawAccountRequest;
 import com.anasdidi.bank.domain.customer.Customer;
 import com.anasdidi.bank.domain.customer.CustomerRepository;
 
@@ -85,6 +86,18 @@ public class AccountService {
 
     Account entity = result.get();
     entity.setAccountBalance(entity.getAccountBalance().add(request.getAmount()));
+    entity = accountRepository.saveAndFlush(entity);
+    return AccountMapper.INSTANCE.toDTO(entity);
+  }
+
+  public AccountDTO withdrawAccount(WithdrawAccountRequest request) {
+    Optional<Account> result = accountRepository.findByAccountNo(request.getAccountNo());
+    if (result.isEmpty()) {
+      return null;
+    }
+
+    Account entity = result.get();
+    entity.setAccountBalance(entity.getAccountBalance().subtract(request.getAmount()));
     entity = accountRepository.saveAndFlush(entity);
     return AccountMapper.INSTANCE.toDTO(entity);
   }
