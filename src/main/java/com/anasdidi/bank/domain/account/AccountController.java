@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +41,12 @@ public class AccountController {
       @RequestParam(required = false) String customerNo,
       @PageableDefault(page = 0, size = 10) Pageable pageable) {
     PaginationDTO<AccountDTO> responseBody = accountService.getAccountList(accountNo, customerNo, pageable);
+    return ResponseEntity.ok().body(responseBody);
+  }
+
+  @GetMapping("/{accountId}")
+  ResponseEntity<AccountDTO> getAccount(@PathVariable String accountId) {
+    AccountDTO responseBody = accountService.getAccount(accountId);
     return ResponseEntity.ok().body(responseBody);
   }
 }

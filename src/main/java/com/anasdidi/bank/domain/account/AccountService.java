@@ -67,4 +67,12 @@ public class AccountService {
         .toList();
     return new PaginationDTO<>(resultList, page);
   }
+
+  public AccountDTO getAccount(String accountId) {
+    Optional<Account> result = accountRepository.findById(accountId);
+    if (result.isEmpty()) {
+      return null;
+    }
+    return AccountMapper.INSTANCE.toDTO(result.get());
+  }
 }
