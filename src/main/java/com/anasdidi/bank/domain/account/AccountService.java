@@ -1,10 +1,15 @@
 package com.anasdidi.bank.domain.account;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.anasdidi.bank.common.PaginationDTO;
 import com.anasdidi.bank.domain.account.request.OpenAccountRequest;
 import com.anasdidi.bank.domain.customer.Customer;
 import com.anasdidi.bank.domain.customer.CustomerRepository;
@@ -40,5 +45,26 @@ public class AccountService {
         .build();
     entity = accountRepository.saveAndFlush(entity);
     return AccountMapper.INSTANCE.toDTO(entity);
+  }
+
+  public PaginationDTO<AccountDTO> getAccountList(String accountNo, String customerNo, Pageable pageable) {
+    boolean hasAccountNo = StringUtils.isNotBlank(accountNo);
+    boolean hasCustomerNo = StringUtils.isNotBlank(customerNo);
+
+    Page<Account> page;
+    if (hasAccountNo && hasCustomerNo) {
+      page = accountRepository.findAllByAccountNoAndCustomerNo(accountNo, customerNo, pageable);
+    } else if (hasAccountNo) {
+      page = accountRepository.findAllByAccountNo(accountNo, pageable);
+    } else if (hasCustomerNo) {
+      page = accountRepository.findAllByCustomerNo(customerNo, pageable);
+    } else {
+      page = accountRepository.findAll(pageable);
+    }
+
+    List<AccountDTO> resultList = page.getContent().stream()
+        .map(AccountMapper.INSTANCE::toDTO)
+        .toList();
+    return new PaginationDTO<>(resultList, page);
   }
 }
