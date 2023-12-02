@@ -1,6 +1,7 @@
 package com.anasdidi.bank.domain.account;
 
 import java.net.URI;
+import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.anasdidi.bank.common.PaginationDTO;
 import com.anasdidi.bank.domain.account.request.DepositAccountRequest;
 import com.anasdidi.bank.domain.account.request.OpenAccountRequest;
+import com.anasdidi.bank.domain.account.request.TransferAccountRequest;
 import com.anasdidi.bank.domain.account.request.WithdrawAccountRequest;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,6 +64,12 @@ public class AccountController {
   @PutMapping("/withdraw")
   ResponseEntity<AccountDTO> withdrawAccount(@RequestBody WithdrawAccountRequest requestBody) {
     AccountDTO responseBody = accountService.withdrawAccount(requestBody);
+    return ResponseEntity.ok().body(responseBody);
+  }
+
+  @PutMapping("/transfer")
+  ResponseEntity<Map<String, AccountDTO>> transferAccount(@RequestBody TransferAccountRequest requestBody) {
+    Map<String, AccountDTO> responseBody = accountService.transferAccount(requestBody);
     return ResponseEntity.ok().body(responseBody);
   }
 }

@@ -1,7 +1,9 @@
 package com.anasdidi.bank.domain.account;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.anasdidi.bank.common.PaginationDTO;
 import com.anasdidi.bank.domain.account.request.DepositAccountRequest;
 import com.anasdidi.bank.domain.account.request.OpenAccountRequest;
+import com.anasdidi.bank.domain.account.request.TransferAccountRequest;
 import com.anasdidi.bank.domain.account.request.WithdrawAccountRequest;
 import com.anasdidi.bank.domain.customer.Customer;
 import com.anasdidi.bank.domain.customer.CustomerRepository;
@@ -100,5 +103,30 @@ public class AccountService {
     entity.setAccountBalance(entity.getAccountBalance().subtract(request.getAmount()));
     entity = accountRepository.saveAndFlush(entity);
     return AccountMapper.INSTANCE.toDTO(entity);
+  }
+
+  public Map<String, AccountDTO> transferAccount(TransferAccountRequest request) {
+    Optional<Account> fromResult = accountRepository.findByAccountNo(request.getFromAccountNo());
+    if (fromResult.isEmpty()) {
+      return null;
+    }
+    Optional<Account> toResult = accountRepository.findByAccountNo(request.getToAccountNo());
+    if (toResult.isEmpty()) {
+      return null;
+    }
+
+    List<Account> saveList = new ArrayList<>();
+    Account fromEntity = fromResult.get();
+    fromEntity.setAccountBalance(fromEntity.getAccountBalance().subtract(request.getAmount()));
+    saveList.add(fromEntity);
+
+    Account toEntity = toResult.get();
+    toEntity.setAccountBalance(toEntity.getAccountBalance().add(request.getAmount()));
+    saveList.add(toEntity);
+
+    saveList = accountRepository.saveAllAndFlush(saveList);
+    return Map.of(
+        "fromAccount", AccountMapper.INSTANCE.toDTO(saveList.get(0)),
+        "toAccount", AccountMapper.INSTANCE.toDTO(saveList.get(1)));
   }
 }
