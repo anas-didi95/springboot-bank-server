@@ -7,6 +7,8 @@
 | DB_URL | String | Database URL | jdbc:sqlserver://localhost:1433;database=master;encrypt=false |
 | DB_USERNAME | String | Database username | sa |
 | DB_PASSWORD | String | Database password | p@ssw0rD! |
+| LOG_LOCATION | String | Log location with path and file name | bank-app.log |
+| LOG_LEVEL | String | Log level | INFO |
 
 ## References
 - [Common Application Properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
