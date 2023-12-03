@@ -10,6 +10,10 @@ import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.ContentCachingResponseWrapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
@@ -27,10 +31,11 @@ public class RequestResponseLogFilter extends GenericFilterBean {
       throws IOException, ServletException {
     ContentCachingRequestWrapper requestWrapper = requestWrapper(request);
     ContentCachingResponseWrapper responseWrapper = responseWrapper(response);
+    String requestId = request.getRequestId();
 
     filterChain.doFilter(requestWrapper, responseWrapper);
-    logRequest(requestWrapper);
-    logResponse(responseWrapper);
+    logRequest(requestWrapper, requestId);
+    logResponse(responseWrapper, requestId);
   }
 
   private ContentCachingRequestWrapper requestWrapper(ServletRequest request) {
@@ -47,27 +52,42 @@ public class RequestResponseLogFilter extends GenericFilterBean {
     return new ContentCachingResponseWrapper((HttpServletResponse) response);
   }
 
-  private void logRequest(ContentCachingRequestWrapper request) {
-    StringBuilder builder = new StringBuilder();
-    builder.append(headersToString(Collections.list(request.getHeaderNames()), request::getHeader));
-    builder.append(new String(request.getContentAsByteArray()));
-    log.info("Request: {}", builder);
+  private void logRequest(ContentCachingRequestWrapper request, String requestId) throws IOException {
+    String tag = String.format("[logRequest:%s]", requestId);
+    log.info("{} {} {}", tag, request.getMethod(), request.getRequestURI());
+    log.info("{} Parameters: {}", tag,
+        collectionToString(Collections.list(request.getParameterNames()), request::getParameter));
+    log.info("{} Headers: {}", tag, collectionToString(Collections.list(request.getHeaderNames()), request::getHeader));
+    log.info("{} Body: {}", tag, beautifyBody(new String(request.getContentAsByteArray())));
   }
 
-  private void logResponse(ContentCachingResponseWrapper response) throws IOException {
-    StringBuilder builder = new StringBuilder();
-    builder.append(headersToString(response.getHeaderNames(), response::getHeader));
-    builder.append(new String(response.getContentAsByteArray()));
-    log.info("Response: {}", builder);
+  private void logResponse(ContentCachingResponseWrapper response, String requestId) throws IOException {
+    String tag = String.format("[logResponse:%s]", requestId);
+    log.info("{} Headers: {}", tag, collectionToString(response.getHeaderNames(), response::getHeader));
+    log.info("{} Body: {}", tag, beautifyBody(new String(response.getContentAsByteArray())));
     response.copyBodyToResponse();
   }
 
-  private String headersToString(Collection<String> headerNames, Function<String, String> headerValueResolver) {
+  private String collectionToString(Collection<String> collection, Function<String, String> valueResolver) {
     StringBuilder builder = new StringBuilder();
-    for (String headerName : headerNames) {
-      String header = headerValueResolver.apply(headerName);
-      builder.append("%s=%s".formatted(headerName, header)).append("\n");
+    boolean putDelimiter = false;
+    for (String item : collection) {
+      if (putDelimiter) {
+        builder.append("; ");
+      }
+      String value = valueResolver.apply(item);
+      builder.append("%s=%s".formatted(item, value));
+      putDelimiter = true;
     }
     return builder.toString();
+  }
+
+  private String beautifyBody(String str) throws JsonProcessingException {
+    if (StringUtils.isBlank(str)) {
+      return "";
+    }
+    ObjectMapper objectMapper = new ObjectMapper();
+    Object body = objectMapper.readValue(str, Object.class);
+    return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(body);
   }
 }
