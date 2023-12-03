@@ -56,7 +56,6 @@ public class CurrencyRateService {
 
     return callList.stream()
         .map(CompletableFuture::join)
-        .peek(Map::toString)
         .map(m -> CurrencyRateDTO.builder()
             .fromCurrency(fromCurrency)
             .toCurrency(toCurrency)
