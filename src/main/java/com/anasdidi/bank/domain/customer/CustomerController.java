@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.anasdidi.bank.common.PaginationDTO;
+import com.anasdidi.bank.exception.CustomerNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ class CustomerController {
   }
 
   @GetMapping("/{customerId}")
-  ResponseEntity<CustomerDTO> getCustomer(@PathVariable String customerId) {
+  ResponseEntity<CustomerDTO> getCustomer(@PathVariable String customerId) throws CustomerNotFoundException {
     CustomerDTO responseBody = customerService.getCustomer(customerId);
     return ResponseEntity.ok().body(responseBody);
   }
@@ -54,13 +55,13 @@ class CustomerController {
   @PutMapping("/{customerId}")
   ResponseEntity<CustomerDTO> updateCustomer(
       @PathVariable String customerId,
-      @RequestBody CustomerDTO requestBody) {
+      @RequestBody CustomerDTO requestBody) throws CustomerNotFoundException {
     CustomerDTO responseBody = customerService.updateCustomer(customerId, requestBody);
     return ResponseEntity.ok().body(responseBody);
   }
 
   @DeleteMapping("/{customerId}")
-  ResponseEntity<Void> deleteCustomer(@PathVariable String customerId) {
+  ResponseEntity<Void> deleteCustomer(@PathVariable String customerId) throws CustomerNotFoundException {
     customerService.deleteCustomer(customerId);
     return ResponseEntity.noContent().build();
   }

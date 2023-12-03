@@ -18,6 +18,8 @@ import com.anasdidi.bank.domain.account.request.TransferAccountRequest;
 import com.anasdidi.bank.domain.account.request.WithdrawAccountRequest;
 import com.anasdidi.bank.domain.customer.Customer;
 import com.anasdidi.bank.domain.customer.CustomerRepository;
+import com.anasdidi.bank.exception.AccountInsufficientBalanceException;
+import com.anasdidi.bank.exception.AccountNotFoundException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -73,18 +75,18 @@ public class AccountService {
     return new PaginationDTO<>(resultList, page);
   }
 
-  public AccountDTO getAccount(String accountId) {
+  public AccountDTO getAccount(String accountId) throws AccountNotFoundException {
     Optional<Account> result = accountRepository.findById(accountId);
     if (result.isEmpty()) {
-      return null;
+      throw AccountNotFoundException.builder().accountId(accountId).build();
     }
     return AccountMapper.INSTANCE.toDTO(result.get());
   }
 
-  public AccountDTO depositAccount(DepositAccountRequest request) {
+  public AccountDTO depositAccount(DepositAccountRequest request) throws AccountNotFoundException {
     Optional<Account> result = accountRepository.findByAccountNo(request.getAccountNo());
     if (result.isEmpty()) {
-      return null;
+      throw AccountNotFoundException.builder().accountNo(request.getAccountNo()).build();
     }
 
     Account entity = result.get();
@@ -93,30 +95,40 @@ public class AccountService {
     return AccountMapper.INSTANCE.toDTO(entity);
   }
 
-  public AccountDTO withdrawAccount(WithdrawAccountRequest request) {
+  public AccountDTO withdrawAccount(WithdrawAccountRequest request)
+      throws AccountNotFoundException, AccountInsufficientBalanceException {
     Optional<Account> result = accountRepository.findByAccountNo(request.getAccountNo());
     if (result.isEmpty()) {
-      return null;
+      throw AccountNotFoundException.builder().accountNo(request.getAccountNo()).build();
     }
 
     Account entity = result.get();
+    if (entity.getAccountBalance().compareTo(request.getAmount()) < 0) {
+      throw AccountInsufficientBalanceException.builder().accountNo(entity.getAccountNo())
+          .accountBalance(entity.getAccountBalance()).amount(request.getAmount()).build();
+    }
     entity.setAccountBalance(entity.getAccountBalance().subtract(request.getAmount()));
     entity = accountRepository.saveAndFlush(entity);
     return AccountMapper.INSTANCE.toDTO(entity);
   }
 
-  public Map<String, AccountDTO> transferAccount(TransferAccountRequest request) {
+  public Map<String, AccountDTO> transferAccount(TransferAccountRequest request)
+      throws AccountNotFoundException, AccountInsufficientBalanceException {
     Optional<Account> fromResult = accountRepository.findByAccountNo(request.getFromAccountNo());
     if (fromResult.isEmpty()) {
-      return null;
+      throw AccountNotFoundException.builder().accountNo(request.getFromAccountNo()).build();
     }
     Optional<Account> toResult = accountRepository.findByAccountNo(request.getToAccountNo());
     if (toResult.isEmpty()) {
-      return null;
+      throw AccountNotFoundException.builder().accountNo(request.getToAccountNo()).build();
     }
 
     List<Account> saveList = new ArrayList<>();
     Account fromEntity = fromResult.get();
+    if (fromEntity.getAccountBalance().compareTo(request.getAmount()) < 0) {
+      throw AccountInsufficientBalanceException.builder().accountNo(fromEntity.getAccountNo())
+          .accountBalance(fromEntity.getAccountBalance()).amount(request.getAmount()).build();
+    }
     fromEntity.setAccountBalance(fromEntity.getAccountBalance().subtract(request.getAmount()));
     saveList.add(fromEntity);
 

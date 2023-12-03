@@ -5,12 +5,16 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientResponseException;
+
+import reactor.core.publisher.Mono;
 
 @Service
 public class CurrencyRateService {
@@ -26,9 +30,10 @@ public class CurrencyRateService {
 
     List<CompletableFuture<Map>> callList = new ArrayList<>();
     for (LocalDate date : dateList) {
+      String dateStr = DateTimeFormatter.ISO_DATE.format(date);
       String uri = String.format(
           "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/%s/currencies/%s/%s.min.json",
-          DateTimeFormatter.ISO_DATE.format(date),
+          dateStr,
           fromCurrency,
           toCurrency);
       callList.add(WebClient.create()
@@ -36,6 +41,13 @@ public class CurrencyRateService {
           .uri(URI.create(uri))
           .retrieve()
           .bodyToMono(Map.class)
+          .retry(3)
+          .onErrorResume(WebClientResponseException.class, (e) -> {
+            Map<Object, Object> map = new HashMap<>();
+            map.put("date", dateStr);
+            map.put(toCurrency, null);
+            return Mono.just(map);
+          })
           .toFuture());
     }
 
@@ -48,7 +60,7 @@ public class CurrencyRateService {
             .fromCurrency(fromCurrency)
             .toCurrency(toCurrency)
             .date(LocalDate.parse((String) m.get("date")))
-            .rate(BigDecimal.valueOf((Double) m.get(toCurrency)))
+            .rate(m.get(toCurrency) != null ? BigDecimal.valueOf((Double) m.get(toCurrency)) : null)
             .build())
         .sorted((a, b) -> b.getDate().compareTo(a.getDate()))
         .toList();

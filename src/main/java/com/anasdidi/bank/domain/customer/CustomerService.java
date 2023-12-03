@@ -9,12 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.anasdidi.bank.common.PaginationDTO;
+import com.anasdidi.bank.exception.CustomerNotFoundException;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@Transactional
+@Transactional(rollbackOn = Exception.class)
 @RequiredArgsConstructor
 public class CustomerService {
 
@@ -47,18 +48,18 @@ public class CustomerService {
     return new PaginationDTO<CustomerDTO>(resultList, page);
   }
 
-  public CustomerDTO getCustomer(String customerId) {
+  public CustomerDTO getCustomer(String customerId) throws CustomerNotFoundException {
     Optional<Customer> result = customerRepository.findById(customerId);
     if (result.isEmpty()) {
-      return null;
+      throw CustomerNotFoundException.builder().customerId(customerId).build();
     }
     return CustomerMapper.INSTANCE.toDTO(result.get());
   }
 
-  public CustomerDTO updateCustomer(String customerId, CustomerDTO newDTO) {
+  public CustomerDTO updateCustomer(String customerId, CustomerDTO newDTO) throws CustomerNotFoundException {
     Optional<Customer> result = customerRepository.findById(customerId);
     if (result.isEmpty()) {
-      return null;
+      throw CustomerNotFoundException.builder().customerId(customerId).build();
     }
 
     Customer entity = result.get();
@@ -67,10 +68,10 @@ public class CustomerService {
     return CustomerMapper.INSTANCE.toDTO(entity);
   }
 
-  public void deleteCustomer(String customerId) {
+  public void deleteCustomer(String customerId) throws CustomerNotFoundException {
     Optional<Customer> result = customerRepository.findById(customerId);
     if (result.isEmpty()) {
-      return;
+      throw CustomerNotFoundException.builder().customerId(customerId).build();
     }
     customerRepository.delete(result.get());
   }
