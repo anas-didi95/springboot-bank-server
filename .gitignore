@@ -1,6 +1,8 @@
 .vscode-server/
 .m2/
+log/
 .env
+bank-app.log
 
 HELP.md
 target/
