@@ -26,12 +26,7 @@ databaseChangeLog:
                   nullable: false
             - column:
                 name: acct_no
-                type: varchar(10)
-                constraints:
-                  nullable: false
-            - column:
-                name: acct_ccy
-                type: varchar(3)
+                type: varchar(20)
                 constraints:
                   nullable: false
             - column:
@@ -80,3 +75,11 @@ databaseChangeLog:
             constraintName: fk_acct_cust
             referencedColumnNames: id
             referencedTableName: t_cust
+
+  - changeSet:
+      id: db.changelog-0.2.0-3
+      author: anas
+      changes:
+        - loadData:
+            tableName: t_acct
+            file: classpath:/db/changelog/data/t_acct.csv

@@ -43,11 +43,8 @@ public class Account extends BaseEntity {
   @JoinColumn(name = "cust_id", referencedColumnName = "id", nullable = false)
   private Customer customer;
 
-  @Column(name = "acct_no", length = 10, nullable = false)
+  @Column(name = "acct_no", length = 16, nullable = false)
   private String accountNo;
-
-  @Column(name = "acct_ccy", length = 3, nullable = false)
-  private String accountCurrency;
 
   @Column(name = "acct_bal", precision = 23, scale = 3, nullable = false)
   private BigDecimal accountBalance;

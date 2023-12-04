@@ -32,7 +32,7 @@ public class Customer extends BaseEntity {
   @Column(name = "id", nullable = false)
   private String id;
 
-  @Column(name = "cust_no", length = 10, nullable = false)
+  @Column(name = "cust_no", length = 16, nullable = false)
   private String customerNo;
 
   @Column(name = "name", length = 200, nullable = false)

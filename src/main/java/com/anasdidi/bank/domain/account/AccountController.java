@@ -4,6 +4,7 @@ import java.net.URI;
 import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -47,7 +48,7 @@ public class AccountController {
   ResponseEntity<PaginationDTO<AccountDTO>> getAccountList(
       @RequestParam(required = false) String accountNo,
       @RequestParam(required = false) String customerNo,
-      @PageableDefault(page = 0, size = 10) Pageable pageable) {
+      @PageableDefault(page = 0, size = 10, sort = "id", direction = Direction.ASC) Pageable pageable) {
     PaginationDTO<AccountDTO> responseBody = accountService.getAccountList(accountNo, customerNo, pageable);
     return ResponseEntity.ok().body(responseBody);
   }
