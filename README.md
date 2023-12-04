@@ -145,3 +145,6 @@ java -jar target/bank-0.0.1-SNAPSHOT.jar
 - [Microsoft SQL Server - Ubuntu based images](https://hub.docker.com/_/microsoft-mssql-server)
 - [Microsoft JDBC Driver for SQL Server](https://learn.microsoft.com/en-us/sql/connect/jdbc/microsoft-jdbc-driver-for-sql-server?view=sql-server-ver16)
 - [currency-api](https://github.com/fawazahmed0/currency-api)
+
+## Contact
+Created by [Anas Juwaidi](mailto:anas.didi95@gmail.com)
