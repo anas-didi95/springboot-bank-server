@@ -102,7 +102,7 @@ The "Bank" project is a comprehensive Spring Boot application designed to provid
 | Variable Name | Data Type | Description | Default Value |
 | --- | --- | --- | --- |
 | APP_PORT | Number | Application port | 8080 |
-| DB_URL | String | Database URL | jdbc:sqlserver://localhost:1433;database=master;encrypt=false |
+| DB_URL | String | Database URL | jdbc:sqlserver://localhost:1433;database=TESTDB;encrypt=false |
 | DB_USERNAME | String | Database username | sa |
 | DB_PASSWORD | String | Database password | p@ssw0rD! |
 | LOG_LOCATION | String | Log location with path and file name | bank-app.log |
