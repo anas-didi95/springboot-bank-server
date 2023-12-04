@@ -52,44 +52,44 @@ The "Bank" project is a comprehensive Spring Boot application designed to provid
 ├── mvnw.cmd                           # Maven wrapper script for Windows
 ├── pom.xml                            # Maven Project Object Model (POM) file
 ├── README.md                          # Project readme file
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com
-│   │   │       └── anasdidi
-│   │   │           └── bank
-│   │   │               ├── BankApplication.java       # Main application class
-│   │   │               ├── common
-│   │   │               │   ├── BaseDTO.java          # Base DTO class
-│   │   │               │   ├── BaseEntity.java       # Base Entity class
-│   │   │               │   ├── ErrorDTO.java         # Error DTO class
-│   │   │               │   └── PaginationDTO.java    # Pagination DTO class
-│   │   │               ├── config
-│   │   │               │   ├── DatabaseConfig.java    # Database configuration
-│   │   │               │   └── RestControllerAdvice.java  # Global exception handler
-│   │   │               ├── domain
-│   │   │               │   ├── account
-│   │   │               │   │   ├── ...              # Account-related classes
-│   │   │               │   ├── currencyrate
-│   │   │               │   │   ├── ...              # Currency Rate-related classes
-│   │   │               │   └── customer
-│   │   │               │       ├── ...              # Customer-related classes
-│   │   │               ├── exception
-│   │   │               │   ├── ...                  # Custom exception classes
-│   │   │               └── filter
-│   │   │                   └── RequestResponseLogFilter.java  # Request/response log filter
-│   │   └── resources
-│   │       ├── application.yml           # Application configuration
-│   │       ├── db
-│   │       │   └── changelog
-│   │       │       ├── data
-│   │       │       │   ├── t_acct.csv   # CSV data for account
-│   │       │       │   └── t_cust.csv   # CSV data for customer
-│   │       │       ├── db.changelog-0.1.0.yml   # Liquibase changelog for version 0.1.0
-│   │       │       ├── db.changelog-0.2.0.yml   # Liquibase changelog for version 0.2.0
-│   │       │       └── db.changelog-master.yml  # Liquibase master changelog
-│   │       ├── static
-│   │       └── templates
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── anasdidi
+    │   │           └── bank
+    │   │               ├── BankApplication.java       # Main application class
+    │   │               ├── common
+    │   │               │   ├── BaseDTO.java          # Base DTO class
+    │   │               │   ├── BaseEntity.java       # Base Entity class
+    │   │               │   ├── ErrorDTO.java         # Error DTO class
+    │   │               │   └── PaginationDTO.java    # Pagination DTO class
+    │   │               ├── config
+    │   │               │   ├── DatabaseConfig.java    # Database configuration
+    │   │               │   └── RestControllerAdvice.java  # Global exception handler
+    │   │               ├── domain
+    │   │               │   ├── account
+    │   │               │   │   ├── ...              # Account-related classes
+    │   │               │   ├── currencyrate
+    │   │               │   │   ├── ...              # Currency Rate-related classes
+    │   │               │   └── customer
+    │   │               │       ├── ...              # Customer-related classes
+    │   │               ├── exception
+    │   │               │   ├── ...                  # Custom exception classes
+    │   │               └── filter
+    │   │                   └── RequestResponseLogFilter.java  # Request/response log filter
+    │   └── resources
+    │       ├── application.yml           # Application configuration
+    │       ├── db
+    │       │   └── changelog
+    │       │       ├── data
+    │       │       │   ├── t_acct.csv   # CSV data for account
+    │       │       │   └── t_cust.csv   # CSV data for customer
+    │       │       ├── db.changelog-0.1.0.yml   # Liquibase changelog for version 0.1.0
+    │       │       ├── db.changelog-0.2.0.yml   # Liquibase changelog for version 0.2.0
+    │       │       └── db.changelog-master.yml  # Liquibase master changelog
+    │       ├── static
+    │       └── templates
     └── test
         └── java
             └── com
