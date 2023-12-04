@@ -23,6 +23,5 @@ public class AccountDTO extends BaseDTO {
   private String id;
   private CustomerDTO customer;
   private String accountNo;
-  private String accountCurrency;
   private BigDecimal accountBalance;
 }

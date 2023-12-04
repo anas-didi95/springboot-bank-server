@@ -18,6 +18,7 @@ import com.anasdidi.bank.domain.account.request.TransferAccountRequest;
 import com.anasdidi.bank.domain.account.request.WithdrawAccountRequest;
 import com.anasdidi.bank.domain.customer.Customer;
 import com.anasdidi.bank.domain.customer.CustomerRepository;
+import com.anasdidi.bank.domain.customer.CustomerUtils;
 import com.anasdidi.bank.exception.AccountInsufficientBalanceException;
 import com.anasdidi.bank.exception.AccountNotFoundException;
 
@@ -37,7 +38,7 @@ public class AccountService {
     Customer customer;
     if (result.isEmpty()) {
       customer = Customer.builder()
-          .customerNo(request.getCustomerNo())
+          .customerNo(CustomerUtils.generateCustomerNo())
           .name(request.getCustomerName())
           .build();
     } else {
@@ -47,7 +48,6 @@ public class AccountService {
     Account entity = Account.builder()
         .customer(customer)
         .accountNo(AccountUtils.generateAccountNo())
-        .accountCurrency(request.getAccountCurrency())
         .accountBalance(BigDecimal.ZERO)
         .build();
     entity = accountRepository.saveAndFlush(entity);

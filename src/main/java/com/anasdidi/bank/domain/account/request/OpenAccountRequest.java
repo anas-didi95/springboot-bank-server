@@ -10,7 +10,4 @@ public class OpenAccountRequest {
 
   @NotBlank
   private String customerName;
-
-  @NotBlank
-  private String accountCurrency;
 }

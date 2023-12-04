@@ -23,6 +23,8 @@ public class CustomerService {
 
   public CustomerDTO createCustomer(CustomerDTO dto) {
     Customer customer = CustomerMapper.INSTANCE.toEntity(dto);
+    customer.setCustomerNo(CustomerUtils.generateCustomerNo());
+    customer.setName(customer.getName().toUpperCase());
     customer = customerRepository.saveAndFlush(customer);
     return CustomerMapper.INSTANCE.toDTO(customer);
   }
@@ -33,11 +35,11 @@ public class CustomerService {
 
     Page<Customer> page;
     if (hasCustomerNo && hasName) {
-      page = customerRepository.findAllByCustomerNoAndNameContains(customerNo, name, pageable);
+      page = customerRepository.findAllByCustomerNoAndNameContains(customerNo, name.toUpperCase(), pageable);
     } else if (hasCustomerNo) {
       page = customerRepository.findAllByCustomerNo(customerNo, pageable);
     } else if (hasName) {
-      page = customerRepository.findAllByNameContains(name, pageable);
+      page = customerRepository.findAllByNameContains(name.toUpperCase(), pageable);
     } else {
       page = customerRepository.findAll(pageable);
     }
