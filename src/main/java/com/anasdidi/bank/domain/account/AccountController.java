@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +37,7 @@ public class AccountController {
   @PostMapping({ "", "/" })
   ResponseEntity<AccountDTO> openAccount(
       HttpServletRequest request,
-      @RequestBody OpenAccountRequest requestBody) {
+      @Validated @RequestBody OpenAccountRequest requestBody) {
     AccountDTO responseBody = accountService.openAccount(requestBody);
     URI location = URI.create(request.getRequestURI() + "/" + responseBody.getId());
     return ResponseEntity.created(location).body(responseBody);
@@ -58,21 +59,21 @@ public class AccountController {
   }
 
   @PutMapping("/deposit")
-  ResponseEntity<AccountDTO> depositAccount(@RequestBody DepositAccountRequest requestBody)
+  ResponseEntity<AccountDTO> depositAccount(@Validated @RequestBody DepositAccountRequest requestBody)
       throws AccountNotFoundException {
     AccountDTO responseBody = accountService.depositAccount(requestBody);
     return ResponseEntity.ok().body(responseBody);
   }
 
   @PutMapping("/withdraw")
-  ResponseEntity<AccountDTO> withdrawAccount(@RequestBody WithdrawAccountRequest requestBody)
+  ResponseEntity<AccountDTO> withdrawAccount(@Validated @RequestBody WithdrawAccountRequest requestBody)
       throws AccountNotFoundException, AccountInsufficientBalanceException {
     AccountDTO responseBody = accountService.withdrawAccount(requestBody);
     return ResponseEntity.ok().body(responseBody);
   }
 
   @PutMapping("/transfer")
-  ResponseEntity<Map<String, AccountDTO>> transferAccount(@RequestBody TransferAccountRequest requestBody)
+  ResponseEntity<Map<String, AccountDTO>> transferAccount(@Validated @RequestBody TransferAccountRequest requestBody)
       throws AccountNotFoundException, AccountInsufficientBalanceException {
     Map<String, AccountDTO> responseBody = accountService.transferAccount(requestBody);
     return ResponseEntity.ok().body(responseBody);

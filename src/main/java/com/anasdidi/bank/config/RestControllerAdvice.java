@@ -1,7 +1,13 @@
 package com.anasdidi.bank.config;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,6 +65,20 @@ public class RestControllerAdvice {
     log.error("[handleException] code={}, message={}", code, message);
     log.error("[handleException] {}", ex.toString());
 
-    return ResponseEntity.badRequest().body(ErrorDTO.builder().code(code).message(message).build());
+    ErrorDTO.ErrorDTOBuilder builder = ErrorDTO.builder()
+        .code(code)
+        .message(message);
+    if (ex instanceof MethodArgumentNotValidException exx) {
+      List<Map<String, String>> errorList = new ArrayList<>();
+      for (int i = 0; i < exx.getErrorCount(); i++) {
+        Map<String, String> map = new HashMap<>();
+        map.put("field", exx.getFieldErrors().get(i).getField());
+        map.put("message", exx.getAllErrors().get(i).getDefaultMessage());
+        errorList.add(map);
+      }
+      builder = builder.errorList(errorList);
+    }
+
+    return ResponseEntity.badRequest().body(builder.build());
   }
 }
