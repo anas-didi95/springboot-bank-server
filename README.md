@@ -14,7 +14,7 @@ The "Bank" project is a comprehensive Spring Boot application designed to provid
 - Deposit and withdraw funds, and perform seamless fund transfers between accounts.
 
 #### Currency Rate Domain:
-- Retrieve currency rates based on specified dates.
+- Retrieve currency rates based on specified dates using [third-party API](https://github.com/fawazahmed0/currency-api).
 
 ### Technologies and Dependencies
 
@@ -47,7 +47,7 @@ The "Bank" project is a comprehensive Spring Boot application designed to provid
 │   └── bank-app.log.2023-12-03.0.gz # Archived log file
 ├── misc
 │   ├── Bank Service.postman_collection.json  # Postman collection for testing
-│   └── spring-init.txt                        # Initialization url
+│   └── spring-init.txt                        # Initialization URL
 ├── mvnw                               # Maven wrapper script for Unix-based systems
 ├── mvnw.cmd                           # Maven wrapper script for Windows
 ├── pom.xml                            # Maven Project Object Model (POM) file
