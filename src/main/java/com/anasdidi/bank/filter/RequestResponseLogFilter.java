@@ -63,6 +63,7 @@ public class RequestResponseLogFilter extends GenericFilterBean {
 
   private void logResponse(ContentCachingResponseWrapper response, String requestId) throws IOException {
     String tag = String.format("[logResponse:%s]", requestId);
+    log.info("{} Status Code: {}", tag, response.getStatus());
     log.info("{} Headers: {}", tag, collectionToString(response.getHeaderNames(), response::getHeader));
     log.info("{} Body: {}", tag, beautifyBody(new String(response.getContentAsByteArray())));
     response.copyBodyToResponse();
