@@ -21,7 +21,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: cust_no
-                  type: varchar(10)
+                  type: varchar(20)
                   constraints:
                     nullable: false
               - column:

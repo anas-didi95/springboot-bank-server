@@ -39,7 +39,7 @@ public class AccountService {
     if (result.isEmpty()) {
       customer = Customer.builder()
           .customerNo(CustomerUtils.generateCustomerNo())
-          .name(request.getCustomerName())
+          .name(request.getCustomerName().toUpperCase())
           .build();
     } else {
       customer = result.get();
